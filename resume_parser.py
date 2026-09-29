@@ -1,6 +1,7 @@
 import spacy
 import re
 import pymupdf as fitz  # PyMuPDF library for PDF text extraction
+import phonenumbers
 
 def extract_text_from_pdf(file_path):
     text = ""
@@ -80,10 +81,15 @@ def parse_resume(text):
     email_match = re.search(email_pattern, text)
     email = email_match.group(0) if email_match else None
 
-    # 5. Extract Phone Number using Regex
-    phone_pattern = r'\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}'
-    phone_match = re.search(phone_pattern, text)
-    phone = phone_match.group(0) if phone_match else None
+    # 5. Extract Phone Number using phonenumbers (UPDATED)
+    phone = None
+    # "IN" sets the fallback region to India if the number lacks a '+' country code.
+    # Change this to "US", "GB", etc., based on where your primary applicants are from.
+    matches = phonenumbers.PhoneNumberMatcher(text, "IN")     
+    for match in matches:
+        # Formats the extracted number to a clean, standardized international format
+        phone = phonenumbers.format_number(match.number, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+        break # We stop after finding the first valid phone number in the resume
 
     # 6. Extract Skills (Using the custom SKILL entities we defined earlier)
     found_skills = set(ent.text for ent in doc.ents if ent.label_ == "SKILL")

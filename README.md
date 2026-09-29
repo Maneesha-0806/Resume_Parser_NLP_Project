@@ -7,7 +7,7 @@ A Python script that extracts basic information from a PDF resume using PyMuPDF 
 - Extracts text from PDF pages while preserving block order.
 - Detects a candidate name from the first few lines.
 - Extracts an email address with regular expressions.
-- Extracts a US-style phone number with regular expressions.
+- Detects phone numbers from various countries and formats the first valid match internationally.
 - Identifies configured technical skills with spaCy's `EntityRuler`.
 
 ## Requirements
@@ -19,7 +19,7 @@ A Python script that extracts basic information from a PDF resume using PyMuPDF 
 Install the Python packages:
 
 ```bash
-pip install spacy pymupdf
+pip install spacy pymupdf phonenumbers
 ```
 
 Download the spaCy model:
@@ -48,7 +48,7 @@ The script prints the extracted name, email, phone number, and skills. For examp
 ```text
 Name: Jane Doe
 Email: jane.doe@example.com
-Phone: (555) 123-4567
+Phone: +1 555-123-4567
 Skills: ['Python', 'SQL', 'Docker']
 ```
 
@@ -72,7 +72,7 @@ To recognize additional skills, add them to `skills_database` in `parse_resume()
 ## Limitations
 
 - Scanned or image-only PDFs may produce little or no text without OCR.
-- Phone detection is designed primarily for US-style 10-digit numbers.
+- Phone detection supports international numbers through the `phonenumbers` library. Numbers without a country code use India (`IN`) as the fallback region; change this in `parse_resume()` if needed.
 - Name detection depends on spaCy's model and fallback heuristics.
 - Skills are limited to the entries configured in `skills_database`.
 - The current script processes one PDF path configured in the source code.
