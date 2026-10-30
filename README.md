@@ -46,10 +46,10 @@ python resume_parser.py
 The script prints the extracted name, email, phone number, and skills. For example:
 
 ```text
-Name: Jane Doe
-Email: jane.doe@example.com
-Phone: +1 555-123-4567
-Skills: ['Python', 'SQL', 'Docker']
+Name: MANEESHA C A
+Email: maneeshaca08@gmail.com
+Phone: +91 86107 13062
+Skills: ['Machine Learning', 'Python', 'Java']
 ```
 
 ## Supported Skills
